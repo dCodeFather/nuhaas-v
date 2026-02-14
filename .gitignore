@@ -3,3 +3,5 @@ valentine-fixed.html
 valentine-new.html
 *.mp3
 .vscode/
+.vercel
+.env*.local
