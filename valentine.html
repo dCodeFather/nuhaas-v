@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffd6e8 0%, #ffb3d9 50%, #ffc9e3 100%);
+            transition: background 0.6s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            background: #ff8fc8;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            left: -10px;
+        }
+
+        .heart::after {
+            top: -10px;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+            transition: all 0.4s ease;
+        }
+
+        .subtext {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            min-height: 24px;
+            transition: all 0.4s ease;
+        }
+
+        .gif-container {
+            width: 100%;
+            height: 280px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 80px;
+        }
+
+        button {
+            padding: 14px 32px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #ff9ecf 0%, #ff70ba 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 112, 186, 0.3);
+        }
+
+        #yesBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 112, 186, 0.4);
+        }
+
+        #noBtn {
+            background: #f5f5f5;
+            color: #666;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #noBtn:hover {
+            background: #e0e0e0;
+        }
+
+        body.state-1 {
+            background: linear-gradient(135deg, #ffc9e3 0%, #ffadd6 50%, #ffb8dc 100%);
+        }
+
+        body.state-2 {
+            background: linear-gradient(135deg, #ffb8dc 0%, #ff9ecf 50%, #ffaad4 100%);
+        }
+
+        body.state-3 {
+            background: linear-gradient(135deg, #ffaad4 0%, #ff8fc8 50%, #ff9cce 100%);
+        }
+
+        body.state-4 {
+            background: linear-gradient(135deg, #ff9cce 0%, #ff80c1 50%, #ff8dc7 100%);
+        }
+
+        body.state-5 {
+            background: linear-gradient(135deg, #ff8dc7 0%, #ff70ba 50%, #ff7ec0 100%);
+        }
+
+        body.state-yes {
+            background: linear-gradient(135deg, #ffd6f0 0%, #ffb3e6 50%, #ffc9ed 100%);
+        }
+
+        .glow {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 158, 207, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 158, 207, 0.8);
+            }
+        }
+
+        .envelope-container {
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInEnvelope 0.8s ease forwards;
+            animation-delay: 1s;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @keyframes fadeInEnvelope {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .letter-button {
+            background: linear-gradient(135deg, #ff9ecf 0%, #ff70ba 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 112, 186, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .letter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 112, 186, 0.4);
+        }
+
+        .letter-button:active {
+            transform: translateY(-1px);
+        }
+
+        .letter-icon {
+            font-size: 24px;
+            animation: wiggle 1s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-10deg);
+            }
+            75% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .letter-modal {
+            background: linear-gradient(135deg, #fff9f0 0%, #fffef8 100%);
+            border-radius: 16px;
+            padding: 40px 35px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border: 2px solid #f0e6d2;
+        }
+
+        .modal-overlay.active .letter-modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .letter-content {
+            text-align: left;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .letter-content h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #ff70ba;
+            text-align: center;
+        }
+
+        .letter-content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .letter-signature {
+            text-align: right;
+            margin-top: 25px;
+            font-style: italic;
+            color: #666;
+        }
+
+        .flowers-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .modal-overlay.active .flowers-modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .flowers-modal h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #ff70ba;
+            text-align: center;
+        }
+
+        .flowers-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .flower {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: growFlower 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .flower:nth-child(1) { animation-delay: 0.1s; }
+        .flower:nth-child(2) { animation-delay: 0.2s; }
+        .flower:nth-child(3) { animation-delay: 0.3s; }
+        .flower:nth-child(4) { animation-delay: 0.4s; }
+        .flower:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes growFlower {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .flower-bloom {
+            font-size: 60px;
+            animation: bloom 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .flower-bloom:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        @keyframes bloom {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .flower-stem {
+            width: 4px;
+            height: 80px;
+            background: linear-gradient(to bottom, #90EE90, #228B22);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .flower-leaf {
+            position: absolute;
+            width: 20px;
+            height: 12px;
+            background: #90EE90;
+            border-radius: 50%;
+            top: 30px;
+        }
+
+        .flower-leaf.left {
+            left: -15px;
+            transform: rotate(-45deg);
+        }
+
+        .flower-leaf.right {
+            right: -15px;
+            transform: rotate(45deg);
+        }
+
+        .flowers-text {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .gif-container {
+                height: 220px;
+            }
+
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+                min-width: 100px;
+            }
+
+            .letter-button {
+                padding: 14px 30px;
+                font-size: 16px;
+            }
+
+            .letter-icon {
+                font-size: 20px;
+            }
+
+            .letter-modal {
+                padding: 30px 25px;
+            }
+
+            .letter-content h2 {
+                font-size: 22px;
+            }
+
+            .letter-content p {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 id="mainText">Will you be my Valentine? ❤️</h1>
+        <p class="subtext" id="subtext"></p>
+        
+        <div class="gif-container">
+            <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXZ5dGZoYnRvZGt5bWJ5dGZoYnRvZGt5bWJ5dGZoYnRvZGt5bWJ5dGZo/MDJ9IbxxvDUQM/giphy.gif" alt="Cute GIF">
+        </div>
+
+        <div class="buttons">
+            <button id="yesBtn">Yes ❤️</button>
+            <button id="noBtn">No 😢</button>
+        </div>
+
+        <div class="envelope-container" id="envelopeContainer" style="display: none;">
+            <button class="letter-button" id="flowersButton">
+                <span class="letter-icon">💮</span>
+                <span>Flowers For You</span>
+            </button>
+            <button class="letter-button" id="letterButton">
+                <span class="letter-icon">�</span>
+                <span>Letter For You</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="letter-modal">
+            <button class="close-btn" id="closeBtn">&times;</button>
+            <div class="letter-content">
+                <h2>To Nuhaa ❤️</h2>
+                <p>Hi Nuhaa,</p>
+                <p>We haven’t really spoken yet, and I want to be honest about that. But from what I do know of you, you seem genuinely kind and thoughtful, and that's something I really admire.</p>
+                <p>I'm not trying to make this big or overwhelming. I just wanted to ask in a simple, honest way.</p>
+                <p>If you'd ever feel comfortable, I'd love to take you out sometime. Maybe for coffee or a quiet walk, nothing complicated. Just a chance to get to know you a little better.</p>
+                <p>There's no pressure or expectations at all. I just wanted you to know that I'd show up with care, respect, and the best intentions.</p>
+                <p>And if this isn't something you'd want, that's completely okay too. I just felt it was worth asking.</p>
+                <div class="letter-signature">
+                    — Bilal
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="flowersModal">
+        <div class="flowers-modal">
+            <button class="close-btn" id="closeFlowersBtn">&times;</button>
+            <h2>These are for you 💐</h2>
+            <div class="flowers-container">
+                <div class="flower">
+                    <div class="flower-bloom">🌹</div>
+                    <div class="flower-stem">
+                        <div class="flower-leaf left"></div>
+                        <div class="flower-leaf right"></div>
+                    </div>
+                </div>
+                <div class="flower">
+                    <div class="flower-bloom">🌷</div>
+                    <div class="flower-stem">
+                        <div class="flower-leaf left"></div>
+                        <div class="flower-leaf right"></div>
+                    </div>
+                </div>
+                <div class="flower">
+                    <div class="flower-bloom">🌺</div>
+                    <div class="flower-stem">
+                        <div class="flower-leaf left"></div>
+                        <div class="flower-leaf right"></div>
+                    </div>
+                </div>
+                <div class="flower">
+                    <div class="flower-bloom">🌸</div>
+                    <div class="flower-stem">
+                        <div class="flower-leaf left"></div>
+                        <div class="flower-leaf right"></div>
+                    </div>
+                </div>
+                <div class="flower">
+                    <div class="flower-bloom">🌼</div>
+                    <div class="flower-stem">
+                        <div class="flower-leaf left"></div>
+                        <div class="flower-leaf right"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="flowers-text">
+                A little bouquet, just to make you smile today 🌸
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentState = 0;
+
+        const messages = [
+            "Will you be my Valentine? ❤️",
+            "Are you sure? 🥺",
+            "What if I buy you flowers? 🌹",
+            "What if I buy you chocolates? 🍫",
+            "What if I take you to dinner? 🥺",
+            "Please... I'll do anything 🥹"
+        ];
+
+        const subtexts = [
+            "",
+            "(Think again...)",
+            "(I know your favorite ones)",
+            "(whichever u want)",
+            "(Anywhere you want)",
+            "(Just give me a chance ❤️)"
+        ];
+
+        const gifs = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXZ5dGZoYnRvZGt5bWJ5dGZoYnRvZGt5bWJ5dGZoYnRvZGt5bWJ5dGZo/MDJ9IbxxvDUQM/giphy.gif",
+            "https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif",
+            "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnJrbmYyeHBrODJzbnl4NDgzNXg5dmV1NGs2ZGd4bGpraDBzN3BzciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8QbwUh40Hl96yMgvOx/giphy.gif",
+            "https://media1.tenor.com/m/zkzn9d4oPaAAAAAd/kitkat-nestle.gif",
+            "https://media.giphy.com/media/ISOckXUybVfQ4/giphy.gif",
+            "https://media1.tenor.com/m/ZYi9nVgQuwIAAAAC/sad-valentine.gif"
+        ];
+
+        const yesGif = "https://media.giphy.com/media/G96zgIcQn1L2xpmdxi/giphy.gif";
+
+        const mainText = document.getElementById('mainText');
+        const subtext = document.getElementById('subtext');
+        const gif = document.getElementById('gif');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const body = document.body;
+
+        noBtn.addEventListener('click', (e) => {
+            if (currentState < 5) {
+                currentState++;
+                
+                mainText.textContent = messages[currentState];
+                subtext.textContent = subtexts[currentState];
+                gif.src = gifs[currentState];
+                
+                body.className = `state-${currentState}`;
+                
+                const scale = 1 - (currentState * 0.12);
+                const opacity = 1 - (currentState * 0.15);
+                noBtn.style.transform = `scale(${scale})`;
+                noBtn.style.opacity = Math.max(opacity, 0.4);
+                
+                yesBtn.style.transform = `scale(${1 + currentState * 0.04})`;
+            }
+        });
+
+        function moveNoButton() {
+            if (window.innerWidth <= 768) {
+                return;
+            }
+            
+            const maxX = 200;
+            const maxY = 120;
+            const randomX = (Math.random() - 0.5) * maxX;
+            const randomY = (Math.random() - 0.5) * maxY;
+            
+            const currentScale = 1 - (currentState * 0.12);
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${currentScale})`;
+            noBtn.style.transition = 'transform 0.25s ease-out';
+        }
+
+        noBtn.addEventListener('mouseenter', () => {
+            if (currentState === 5 && window.innerWidth > 768) {
+                moveNoButton();
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (currentState === 5 && window.innerWidth > 768) {
+                const btnRect = noBtn.getBoundingClientRect();
+                const btnCenterX = btnRect.left + btnRect.width / 2;
+                const btnCenterY = btnRect.top + btnRect.height / 2;
+                
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - btnCenterX, 2) + 
+                    Math.pow(e.clientY - btnCenterY, 2)
+                );
+                
+                if (distance < 150) {
+                    moveNoButton();
+                }
+            }
+        });
+
+        yesBtn.addEventListener('click', () => {
+            mainText.textContent = "YAY!!! ❤️ I knew it ✨";
+            mainText.classList.add('glow');
+            subtext.textContent = "You just made me very very happy ❤️";
+            gif.src = yesGif;
+            
+            body.className = 'state-yes';
+            
+            yesBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+            
+            createFloatingHearts();
+            
+            setTimeout(() => {
+                document.getElementById('envelopeContainer').style.display = 'block';
+            }, 1000);
+        });
+
+        const letterButton = document.getElementById('letterButton');
+        const flowersButton = document.getElementById('flowersButton');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const flowersModal = document.getElementById('flowersModal');
+        const closeBtn = document.getElementById('closeBtn');
+        const closeFlowersBtn = document.getElementById('closeFlowersBtn');
+
+        letterButton.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+        });
+
+        flowersButton.addEventListener('click', () => {
+            flowersModal.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+
+        closeFlowersBtn.addEventListener('click', () => {
+            flowersModal.classList.remove('active');
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+
+        flowersModal.addEventListener('click', (e) => {
+            if (e.target === flowersModal) {
+                flowersModal.classList.remove('active');
+            }
+        });
+
+        function createFloatingHearts() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animation = `float-up ${3 + Math.random() * 2}s ease-in`;
+                    body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 200);
+            }
+        }
+    </script>
+</body>
+</html>
