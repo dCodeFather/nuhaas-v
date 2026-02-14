@@ -529,7 +529,7 @@
                 <span>Flowers For You</span>
             </button>
             <button class="letter-button" id="letterButton">
-                <span class="letter-icon">�</span>
+                <span class="letter-icon">✉️</span>
                 <span>Letter For You</span>
             </button>
         </div>
@@ -630,7 +630,7 @@
             "https://media1.tenor.com/m/ZYi9nVgQuwIAAAAC/sad-valentine.gif"
         ];
 
-        const yesGif = "https://media.giphy.com/media/G96zgIcQn1L2xpmdxi/giphy.gif";
+        const yesGif = "https://media1.tenor.com/m/dIfqjnRBS9UAAAAC/rcb-cricket.gif";
 
         const mainText = document.getElementById('mainText');
         const subtext = document.getElementById('subtext');
@@ -649,10 +649,17 @@
                 
                 body.className = `state-${currentState}`;
                 
-                const scale = 1 - (currentState * 0.12);
-                const opacity = 1 - (currentState * 0.15);
-                noBtn.style.transform = `scale(${scale})`;
-                noBtn.style.opacity = Math.max(opacity, 0.4);
+                // Shrink less aggressively, keep button more visible
+                if (currentState < 5) {
+                    const scale = 1 - (currentState * 0.08);
+                    const opacity = 1 - (currentState * 0.1);
+                    noBtn.style.transform = `scale(${scale})`;
+                    noBtn.style.opacity = Math.max(opacity, 0.6);
+                } else {
+                    // State 5 - keep button at good size for floating
+                    noBtn.style.transform = 'scale(0.85)';
+                    noBtn.style.opacity = 1;
+                }
                 
                 yesBtn.style.transform = `scale(${1 + currentState * 0.04})`;
             }
@@ -668,8 +675,8 @@
             const randomX = (Math.random() - 0.5) * maxX;
             const randomY = (Math.random() - 0.5) * maxY;
             
-            const currentScale = 1 - (currentState * 0.12);
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${currentScale})`;
+            // Keep button at good visible size (0.85 scale)
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.85)`;
             noBtn.style.transition = 'transform 0.25s ease-out';
         }
 
